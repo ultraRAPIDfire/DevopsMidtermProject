@@ -3,19 +3,14 @@ import os
 import numpy as np
 import mediapipe as mp
 
-# Access solutions directly through the mp object
-mp_pose = mp.solutions.pose
-mp_drawing = mp.solutions.drawing_utils
-
 def process_images():
-    input_dir = 'inputs/'
-    output_dir = 'outputs/'
-    
-    # Requirement: Automatically detect image files [cite: 17]
+    input_dir, output_dir = 'inputs/', 'outputs/'
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    # Initialize MediaPipe for Pose Matching
+    # Initialize solutions here to ensure they are loaded after imports
+    mp_pose = mp.solutions.pose
+    mp_drawing = mp.solutions.drawing_utils
     pose_tracker = mp_pose.Pose(static_image_mode=True)
 
     for filename in os.listdir(input_dir):
