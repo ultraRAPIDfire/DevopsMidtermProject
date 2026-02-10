@@ -1,25 +1,37 @@
-name: Image Processing CI
-on: [push]
+name: Image Processing CI Pipeline
+on: [push] # Requirement: Run automatically on every push [cite: 20]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup Python
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-      - name: Install Tools
+
+      # Fix for MediaPipe/OpenCV Linux requirements
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-glx
+
+      - name: Install Python Tools
         run: pip install opencv-python-headless pytest numpy mediapipe
+
       - name: Run Tests
         env:
-          PYTHONPATH: . # This tells Python to look in the root folder for 'scripts'
-        run: pytest tests/
-      - name: Run Processor
+          PYTHONPATH: .
+        run: pytest tests/ # Requirement: Implement CI pipeline [cite: 9]
+
+      - name: Run Image Processor
         run: python scripts/processor.py
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+
+      - name: Upload Processed Images
+        uses: actions/upload-artifact@v4 # Deliverable: Processed image outputs 
         with:
-          name: processed-images
+          name: processed-results
           path: outputs/
