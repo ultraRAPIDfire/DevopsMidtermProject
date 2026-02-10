@@ -2,15 +2,15 @@ import cv2
 import os
 import numpy as np
 
-# Updated import logic to prevent ModuleNotFoundError
-import mediapipe as mp
+# Updated import logic to fix ModuleNotFoundError
 try:
+    import mediapipe as mp
     from mediapipe.solutions import pose as mp_pose
     from mediapipe.solutions import drawing_utils as mp_drawing
-except ImportError:
-    # Fallback for environments with strict pathing
-    import mediapipe.solutions.pose as mp_pose
-    import mediapipe.solutions.drawing_utils as mp_drawing
+except (ImportError, ModuleNotFoundError):
+    # Direct sub-module import for Linux/CI environments
+    import mediapipe.python.solutions.pose as mp_pose
+    import mediapipe.python.solutions.drawing_utils as mp_drawing
 
 def process_images():
     input_dir = 'inputs/'

@@ -1,5 +1,5 @@
 name: Image Processing CI Pipeline
-on: [push] # Pipeline must automatically run on every push 
+on: [push]
 
 jobs:
   build-and-test:
@@ -19,19 +19,19 @@ jobs:
           sudo apt-get install -y libgl1 libglib2.0-0
 
       - name: Install Python Tools
-        # We specify the version to ensure stability in the CI environment
+        # Explicitly installing the full mediapipe package
         run: pip install opencv-python-headless pytest numpy mediapipe
 
       - name: Run Tests
         env:
-          PYTHONPATH: . # Crucial for finding the 'scripts' module
+          PYTHONPATH: . # Forces Python to look at the root for 'scripts'
         run: pytest tests/
 
       - name: Run Image Processor
         run: python scripts/processor.py
 
-      - name: Upload Processed Images
-        uses: actions/upload-artifact@v4 # Deliverable: Processed image outputs 
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
         with:
           name: processed-results
           path: outputs/

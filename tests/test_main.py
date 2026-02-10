@@ -1,6 +1,6 @@
 import os
 import sys
-# Ensures the root directory is in the path so 'scripts' is recognized
+# Map the root directory so 'scripts' is recognized during test collection
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from scripts.processor import process_images
