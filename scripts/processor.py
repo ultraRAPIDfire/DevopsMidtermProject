@@ -3,7 +3,7 @@ import os
 import numpy as np
 import mediapipe as mp
 
-# Use this direct access method which is more stable across OS versions
+# Access solutions directly through the mp object
 mp_pose = mp.solutions.pose
 mp_drawing = mp.solutions.drawing_utils
 

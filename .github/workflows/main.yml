@@ -1,18 +1,16 @@
-name: Image Processing CI Pipeline
-on: [push]
+name: Image Processing CI
+on: [push] # Pipeline must automatically run on every push [cite: 20]
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
+      - uses: actions/checkout@v4
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-
+      
       - name: Install System Dependencies
         run: |
           sudo apt-get update
@@ -20,19 +18,13 @@ jobs:
 
       - name: Install Python Tools
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install opencv-python-headless pytest numpy mediapipe
 
       - name: Run Tests
         env:
-          PYTHONPATH: . # Forces Python to look at the root for 'scripts'
+          PYTHONPATH: .
         run: pytest tests/
 
-      - name: Run Image Processor
+      - name: Run Processor
         run: python scripts/processor.py
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: processed-results
-          path: outputs/
