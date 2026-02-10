@@ -19,8 +19,9 @@ jobs:
           sudo apt-get install -y libgl1 libglib2.0-0
 
       - name: Install Python Tools
-        # Explicitly installing the full mediapipe package
-        run: pip install opencv-python-headless pytest numpy mediapipe
+        run: |
+          pip install --upgrade pip
+          pip install opencv-python-headless pytest numpy mediapipe
 
       - name: Run Tests
         env:
