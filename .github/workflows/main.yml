@@ -13,25 +13,25 @@ jobs:
         with:
           python-version: '3.11'
 
-      # FIX: Updated for Ubuntu 24.04 compatibility
       - name: Install System Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y libgl1 libglib2.0-0
 
       - name: Install Python Tools
+        # We specify the version to ensure stability in the CI environment
         run: pip install opencv-python-headless pytest numpy mediapipe
 
       - name: Run Tests
         env:
-          PYTHONPATH: .
-        run: pytest tests/ 
+          PYTHONPATH: . # Crucial for finding the 'scripts' module
+        run: pytest tests/
 
       - name: Run Image Processor
-        run: python scripts/processor.py 
+        run: python scripts/processor.py
 
       - name: Upload Processed Images
-        uses: actions/upload-artifact@v4 # Deliverable: Processed image outputs [cite: 27]
+        uses: actions/upload-artifact@v4 # Deliverable: Processed image outputs 
         with:
           name: processed-results
           path: outputs/
